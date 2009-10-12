@@ -489,6 +489,11 @@ class DiffSettingsForm(SiteSettingsForm):
         label=_("Show syntax highlighting"),
         required=False)
 
+    diffviewer_syntax_style = forms.CharField(
+        label=_("Syntax highlighting style:"),
+        required=False,
+        help_text=_("style"))
+
     diffviewer_syntax_highlighting_threshold = forms.IntegerField(
         label=_("Syntax highlighting threshold"),
         help_text=_("Files with lines greater than this number will not have "
@@ -535,6 +540,8 @@ class DiffSettingsForm(SiteSettingsForm):
         if not can_syntax_highlight:
             self.disabled_fields['diffviewer_syntax_highlighting'] = True
             self.disabled_reasons['diffviewer_syntax_highlighting'] = _(reason)
+            self.disabled_fields['diffviewer_syntax_style'] = True
+            self.disabled_reasons['diffviewer_syntax_style'] = _(reason)
             self.disabled_fields['diffviewer_syntax_highlighting_threshold'] = True
             self.disabled_reasons['diffviewer_syntax_highlighting_threshold'] = _(reason)
 
@@ -558,6 +565,7 @@ class DiffSettingsForm(SiteSettingsForm):
                 'title': _("General"),
                 'classes': ('wide',),
                 'fields': ('diffviewer_syntax_highlighting',
+                           'diffviewer_syntax_style',
                            'diffviewer_syntax_highlighting_threshold',
                            'diffviewer_show_trailing_whitespace',
                            'include_space_patterns'),

@@ -303,7 +303,9 @@ def get_chunks(diffset, filediff, interfilediff, force_interdiff,
         except AttributeError:
             pass
 
-        return pygments.highlight(data, lexer, HtmlFormatter(style='fruity')).splitlines()
+        style = siteconfig.get('diffviewer_syntax_style')
+
+        return pygments.highlight(data, lexer, HtmlFormatter(style=style)).splitlines()
 
 
     # There are three ways this function is called:
