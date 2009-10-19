@@ -41,7 +41,7 @@
 {%   endif %}
 {%   for chunk in file.chunks %}
 {%    if not chunk.collapsable or not collapseall %}
- <tbody id="chunk{{file.index}}.{{chunk.index}}"{% ifnotequal chunk.change "equal" %} class="{{chunk.change}}{% if chunk.meta.whitespace_chunk%} whitespace-chunk{% endif%}"{% else %}{% if chunk.collapsable %} class="collapsable"{% endif %}{% endifnotequal %}>
+ <tbody id="chunk{{file.index}}.{{chunk.index}}" class="syntax {% ifnotequal chunk.change 'equal' %}{{chunk.change}}{% if chunk.meta.whitespace_chunk%} whitespace-chunk{% endif%}{% else %}{% if chunk.collapsable %} collapsable{% endif %}{% endifnotequal %}">
 {%     for line in chunk.lines %}
   <tr line="{{line.0}}"{% ifnotequal chunk.change "equal" %} {% attr "class" %}{% if forloop.first %}first {% endif %}{% if forloop.last %}last {% endif %} {% if line.7 %}whitespace-line{% endif %}{% endattr %}{% endifnotequal %}>
 {%      if forloop.first %}
