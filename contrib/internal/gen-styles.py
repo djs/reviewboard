@@ -14,7 +14,7 @@ def main():
 
     for style in styles:
         fh = open(os.path.join(dir, style + '.css'), 'w')
-        fh.write(HtmlFormatter().get_style_defs())
+        fh.write(HtmlFormatter(style=style).get_style_defs('.syntax'))
         fh.close()
 
 if __name__ == '__main__':
