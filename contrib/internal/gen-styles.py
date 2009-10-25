@@ -1,6 +1,9 @@
 #!/usr/bin/env python
-import sys
+
 import os
+import re
+import sys
+
 from pygments.styles import get_all_styles
 from pygments.formatters import HtmlFormatter
 
@@ -14,7 +17,12 @@ def main():
 
     for style in styles:
         fh = open(os.path.join(dir, style + '.css'), 'w')
-        fh.write(HtmlFormatter(style=style).get_style_defs('.syntax'))
+        css = HtmlFormatter(style=style).get_style_defs('.syntax')
+        for line in css.split('\n'):
+            # remove overall text color style
+            line = re.sub('(\.syntax\s+{.*)(color: [^\s]+)\s*(})', '\g<1>\g<3>', line)
+            print line
+            fh.write(line + '\n')
         fh.close()
 
 if __name__ == '__main__':
