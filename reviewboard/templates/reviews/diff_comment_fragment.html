@@ -35,10 +35,10 @@
  </tbody>
 {% endif %}
 {% for chunk in chunks %}
- <tbody class="{{chunk.change}}">
+ <tbody class="syntax {{chunk.change}}">
 {#  <tr><td colspan="4">{{chunk.meta}}</td></tr> #}
 {% for line in chunk.lines %}
-  <tr{% ifnotequal chunk.change "equal" %}{% attr "class" %}{% if forloop.first %}first{% endif %} {% if forloop.last %}last{% endif %}{% endattr %}{% endifnotequal %}>
+ <tr class="{% ifnotequal chunk.change 'equal' %}{% if forloop.first %}first{% endif %} {% if forloop.last %}last{% endif %}{% endifnotequal %}">
     <th>{{line.1}}</td>
     <td><pre>{{line.2|highlightregion:line.3|showextrawhitespace}}</pre></td>
     <th>{{line.4}}</td>
