@@ -490,9 +490,8 @@ class DiffSettingsForm(SiteSettingsForm):
         required=False)
 
     diffviewer_syntax_style = forms.CharField(
-        label=_("Syntax highlighting style:"),
-        required=False,
-        help_text=_("style"))
+        label=_("Syntax highlighting style"),
+        required=False)
 
     diffviewer_syntax_highlighting_threshold = forms.IntegerField(
         label=_("Syntax highlighting threshold"),
