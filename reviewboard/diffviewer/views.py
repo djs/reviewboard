@@ -15,11 +15,12 @@ from djblets.util.misc import cache_memoize, get_object_or_none
 from reviewboard.diffviewer.models import DiffSet, FileDiff
 from reviewboard.diffviewer.diffutils import UserVisibleError, \
                                              get_diff_files, \
-                                             get_enable_highlighting
+                                             get_enable_highlighting, \
+                                             get_syntax_style
 
 
-def build_diff_fragment(request, file, chunkindex, highlighting, collapseall,
-                        context,
+def build_diff_fragment(request, file, chunkindex, highlighting, style,
+                        collapseall, context,
                         template_name='diffviewer/diff_file_fragment.html'):
     key = "%s-%s-%s-" % (template_name, file['index'],
                          file['filediff'].diffset.revision)
@@ -49,6 +50,9 @@ def build_diff_fragment(request, file, chunkindex, highlighting, collapseall,
     if highlighting:
         key += '-highlighting'
 
+    if style:
+        key += '-%s' % style
+
     key += '-%s' % settings.AJAX_SERIAL
 
     context['file'] = file
@@ -74,6 +78,7 @@ def view_diff(request, diffset_id, interdiffset_id=None, extra_context={},
     diffset = get_object_or_404(DiffSet, pk=diffset_id)
     interdiffset = get_object_or_none(DiffSet, pk=interdiffset_id)
     highlighting = get_enable_highlighting(request.user)
+    style = get_syntax_style(request.user)
 
     try:
         if interdiffset_id:
@@ -157,7 +162,8 @@ def view_diff(request, diffset_id, interdiffset_id=None, extra_context={},
                 file_temp['index'] = first_file['index']
                 first_file['fragment'] = \
                     build_diff_fragment(request, file_temp, None,
-                                        highlighting, collapse_diffs, context,
+                                        highlighting, style, collapse_diffs,
+                                        context,
                                         'diffviewer/diff_file_fragment.html')
 
         response = render_to_response(template_name,
@@ -204,6 +210,7 @@ def view_diff_fragment(
     filediff = get_object_or_404(FileDiff, pk=filediff_id, diffset=diffset)
     interdiffset = get_object_or_none(DiffSet, pk=interdiffset_id)
     highlighting = get_enable_highlighting(request.user)
+    style = get_syntax_style(request.user)
 
     if chunkindex:
         collapseall = False
@@ -220,8 +227,9 @@ def view_diff_fragment(
 
             return HttpResponse(build_diff_fragment(request, file,
                                                     chunkindex,
-                                                    highlighting, collapseall,
-                                                    context, template_name))
+                                                    highlighting, style,
+                                                    collapseall, context,
+                                                    template_name))
         raise UserVisibleError(
             _(u"Internal error. Unable to locate file record for filediff %s") % \
             filediff.id)

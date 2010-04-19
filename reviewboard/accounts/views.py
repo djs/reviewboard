@@ -69,6 +69,7 @@ def user_preferences(request, template_name='accounts/prefs.html'):
             profile.first_time_setup_done = True
             profile.syntax_highlighting = \
                 form.cleaned_data['syntax_highlighting']
+            profile.syntax_style = form.cleaned_data['syntax_style']
             profile.save()
 
             return HttpResponseRedirect(redirect_to)
@@ -80,6 +81,8 @@ def user_preferences(request, template_name='accounts/prefs.html'):
             'last_name': request.user.last_name,
             'email': request.user.email,
             'syntax_highlighting': profile.syntax_highlighting,
+            'syntax_style': profile.syntax_style or
+                siteconfig.get("diffviewer_syntax_style"),
             'groups': [g.id for g in request.user.review_groups.all()],
         })
 

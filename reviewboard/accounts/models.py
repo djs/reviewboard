@@ -57,6 +57,8 @@ class Profile(models.Model):
         help_text=_("Indicates whether the user wishes to see "
                     "syntax highlighting in the diffs."))
 
+    syntax_style = models.CharField(max_length=256, blank=True)
+
     # Indicate whether submitted review requests should appear in the
     # review request lists (excluding the dashboard).
     show_submitted = models.BooleanField(default=True)

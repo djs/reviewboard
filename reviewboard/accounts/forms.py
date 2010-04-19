@@ -14,6 +14,7 @@ class PreferencesForm(forms.Form):
                                        required=False)
     syntax_highlighting = forms.BooleanField(required=False,
         label=_("Enable syntax highlighting in the diff viewer"))
+    syntax_style = forms.CharField(required=False)
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=False)
     email = forms.EmailField()

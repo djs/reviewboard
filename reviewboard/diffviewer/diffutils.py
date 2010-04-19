@@ -1045,3 +1045,14 @@ def get_enable_highlighting(user):
     return (siteconfig.get('diffviewer_syntax_highlighting') and
             user_syntax_highlighting and
             get_can_enable_syntax_highlighting())
+
+
+def get_syntax_style(user):
+    if user.is_authenticated():
+        profile, profile_is_new = Profile.objects.get_or_create(user=user)
+        syntax_style = profile.syntax_style
+    else:
+        siteconfig = SiteConfiguration.objects.get_current()
+        syntax_style = siteconfig.get('diffviewer_syntax_style')
+
+    return syntax_style
